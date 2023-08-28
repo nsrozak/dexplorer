@@ -4,6 +4,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 from typing import Tuple, Any
 from scipy.stats import gaussian_kde
 
@@ -103,7 +104,7 @@ class Scatterplot(Plot2D):
         self.sequential_cmap = 'YlOrRd'
 
     def _add_plot_data(self, fig: Any, data: pd.DataFrame, color: Any=None, 
-                       diverging: bool=False):
+                       diverging: bool=False, norm: mcolors.TwoSlopeNorm=None):
         # get color
         color = self.categorical_colors[0] if color == None else color
         # get color map
@@ -112,7 +113,7 @@ class Scatterplot(Plot2D):
         # create plot
         x = data[self.x_column]
         y = data[self.y_column]
-        plt.scatter(x, y, color=color, cmap=cmap)
+        plt.scatter(x, y, color=color, cmap=cmap, norm=norm)
 
         # return figure
         return fig
@@ -125,6 +126,27 @@ class Scatterplot(Plot2D):
 
         # add plot data
         fig = self._add_plot_data(fig, self.data, color=z)
+
+        # return figure
+        return fig
+    
+    def _add_continuous_plot_data(self, fig: Any, color_column: str, color_type: str):
+        # get coloring
+        color = self.data[color_column]
+
+        if color_type == 'diverging':
+            diverging = True
+            norm = mcolors.TwoSlopeNorm(vmin=color.min(), vmax=color.max(), vcenter=0)
+        else:
+            diverging = False
+            norm = None
+
+        # add plot data
+        fig = self._add_plot_data(fig, self.data, 
+                                  color=color, 
+                                  diverging=diverging, 
+                                  norm=norm
+                                 )
 
         # return figure
         return fig
@@ -146,7 +168,7 @@ class Scatterplot(Plot2D):
             fig = self._add_density_plot_data(fig)
 
         elif (color_type == 'diverging') or (color_type == 'continuous'):
-            to_do = True
+            fig = self._add_continuous_plot_data(fig, color_column, color_type)
 
         # return figure
         return fig
@@ -170,6 +192,7 @@ class LineChart(Plot2D):
         y = data[self.y_column]
         plt.plot(x, y, color=color)
 
+        # add errors
         if self.error_column != None:
             error_low, error_high = self._get_error(data)
             plt.fill_between(x, error_low, error_high, color=color, alpha=0.3)
