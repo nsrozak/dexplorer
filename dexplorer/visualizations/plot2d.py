@@ -73,16 +73,60 @@ class Plot2D():
         # return figure
         return fig
 
-    def _add_categorical_plot_data(self, fig: Any, color_column: str, _add_plot_data: function):
+    def _add_categorical_plot_data(self, fig: Any, color_column: str, _add_plot_data: Any):
         # add legend
         categories = self.data[color_column].unique()
-        plt.legend(categories, bbox_to_anchor=(1.01, 1), loc='upper left', ncol=1)
 
         for i, category in enumerate(categories):
             # add data to the figure
             color = self.categorical_colors[i]
             data_category = self.data[self.data[color_column] == category].copy()
             fig = _add_plot_data(fig, data_category, color=color)
+
+        # add legend
+        plt.legend(categories, bbox_to_anchor=(1.01, 1), loc='upper left', ncol=1)
+
+        # return figure
+        return fig
+
+
+class LineChart(Plot2D):
+    def __init__(self, data: pd.DataFrame, x_column: str, y_column: str, 
+                 x_label: str, y_label: str, error_column: str=None, 
+                 error_high_column: str=None, figsize: Tuple=(8, 6)):        
+        # initialize super class
+        super(Scatterplot, self).__init__(data, x_column, y_column, 
+                                          x_label, y_label, 
+                                          error_column=error_column, 
+                                          error_high_column=error_high_column, 
+                                          figsize=figsize
+                                          )
+
+    def _add_plot_data(self, fig: Any, data: pd.DataFrame, color: str=None):
+        # create plot
+        x = data[self.x_column]
+        y = data[self.y_column]
+        plt.plot(x, y, color=color)
+
+        # add errors
+        if self.error_column != None:
+            error_low, error_high = self._get_error(data)
+            plt.fill_between(x, error_low, error_high, color=color, alpha=0.3)
+
+        # return figure
+        return fig
+    
+    def create_plot(self, title: str, color_column: str=None, x_ticks_width: int=None, 
+                    y_ticks_width: int=None):
+        # get plot axes
+        fig = self._get_plot_axes(title, x_ticks_width=x_ticks_width, y_ticks_width=y_ticks_width)
+
+        # add data to the plot
+        if color_column == None:
+            fig = self._add_plot_data(fig, self.data, color=None)
+            
+        else:
+           fig = self._add_categorical_plot_data(fig, color_column, self._add_plot_data)
 
         # return figure
         return fig
@@ -106,14 +150,14 @@ class Scatterplot(Plot2D):
     def _add_plot_data(self, fig: Any, data: pd.DataFrame, color: Any=None, 
                        diverging: bool=False, norm: mcolors.TwoSlopeNorm=None):
         # get color
-        color = self.categorical_colors[0] if color == None else color
+        color = self.categorical_colors[0] if color is None else color
         # get color map
         cmap = self.diverging_cmap if diverging == True else self.sequential_cmap
 
         # create plot
         x = data[self.x_column]
         y = data[self.y_column]
-        plt.scatter(x, y, color=color, cmap=cmap, norm=norm)
+        plt.scatter(x, y, c=color, cmap=cmap, norm=norm)
 
         # return figure
         return fig
@@ -169,48 +213,6 @@ class Scatterplot(Plot2D):
 
         elif (color_type == 'diverging') or (color_type == 'continuous'):
             fig = self._add_continuous_plot_data(fig, color_column, color_type)
-
-        # return figure
-        return fig
-    
-
-class LineChart(Plot2D):
-    def __init__(self, data: pd.DataFrame, x_column: str, y_column: str, 
-                 x_label: str, y_label: str, error_column: str=None, 
-                 error_high_column: str=None, figsize: Tuple=(8, 6)):        
-        # initialize super class
-        super(Scatterplot, self).__init__(data, x_column, y_column, 
-                                          x_label, y_label, 
-                                          error_column=error_column, 
-                                          error_high_column=error_high_column, 
-                                          figsize=figsize
-                                          )
-
-    def _add_plot_data(self, fig: Any, data: pd.DataFrame, color: str=None):
-        # create plot
-        x = data[self.x_column]
-        y = data[self.y_column]
-        plt.plot(x, y, color=color)
-
-        # add errors
-        if self.error_column != None:
-            error_low, error_high = self._get_error(data)
-            plt.fill_between(x, error_low, error_high, color=color, alpha=0.3)
-
-        # return figure
-        return fig
-    
-    def create_plot(self, title: str, color_column: str=None, x_ticks_width: int=None, 
-                    y_ticks_width: int=None):
-        # get plot axes
-        fig = self._get_plot_axes(title, x_ticks_width=x_ticks_width, y_ticks_width=y_ticks_width)
-
-        # add data to the plot
-        if color_column == None:
-            fig = self._add_plot_data(fig, self.data, color=None)
-            
-        else:
-           fig = self._add_categorical_plot_data(fig, color_column, self._add_plot_data)
 
         # return figure
         return fig
