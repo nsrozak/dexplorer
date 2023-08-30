@@ -211,7 +211,7 @@ class Scatterplot(Plot2D):
         elif color_type == 'density':
             fig = self._add_density_plot_data(fig)
 
-        elif (color_type == 'diverging') or (color_type == 'continuous'):
+        elif (color_type == 'diverging') or (color_type == 'sequential'):
             fig = self._add_continuous_plot_data(fig, color_column, color_type)
 
         # return figure

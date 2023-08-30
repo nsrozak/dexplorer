@@ -47,6 +47,20 @@ plt.savefig(os.path.join('plots', 'scatterplot_density.png'),
             bbox_inches='tight'
             )
 
-print(data)
+# create sequential scatterplot
+scatterplot_sequential = scatterplot.create_plot('Scatterplot, Sequential',
+                                                 color_type='sequential',
+                                                 color_column='feature_2'
+                                                )
+plt.savefig(os.path.join('plots', 'scatterplot_sequential.png'),
+            bbox_inches='tight'
+            )
 
-print(data['feature_9'].unique())
+# create diverging scatterplot
+scatterplot_diverging = scatterplot.create_plot('Scatterplot, Diverging',
+                                                color_type='diverging',
+                                                color_column='feature_3'
+                                               )
+plt.savefig(os.path.join('plots', 'scatterplot_diverging.png'),
+            bbox_inches='tight'
+            )
