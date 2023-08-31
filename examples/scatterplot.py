@@ -10,7 +10,7 @@ from dexplorer.visualizations import Scatterplot
 x_column = 'feature_0'
 y_column = 'feature_1'
 x_label = 'x feature'
-y_label = 'y_feature'
+y_label = 'y feature'
 figsize = (8, 6)
 
 ### Main Program ###

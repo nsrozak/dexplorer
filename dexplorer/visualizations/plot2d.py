@@ -95,12 +95,12 @@ class LineChart(Plot2D):
                  x_label: str, y_label: str, error_column: str=None, 
                  error_high_column: str=None, figsize: Tuple=(8, 6)):        
         # initialize super class
-        super(Scatterplot, self).__init__(data, x_column, y_column, 
-                                          x_label, y_label, 
-                                          error_column=error_column, 
-                                          error_high_column=error_high_column, 
-                                          figsize=figsize
-                                          )
+        super(LineChart, self).__init__(data, x_column, y_column, 
+                                        x_label, y_label, 
+                                        error_column=error_column, 
+                                        error_high_column=error_high_column, 
+                                        figsize=figsize
+                                       )
 
     def _add_plot_data(self, fig: Any, data: pd.DataFrame, color: str=None):
         # create plot
