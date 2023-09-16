@@ -40,16 +40,15 @@ plt.savefig(os.path.join('plots', 'line_chart_basic.png'),
             )
 
 # basic line chart colored by column
-line_chart_basic = line_chart.create_plot('Line Chart, Basic', 
-                                          color_column='feature_11'
-                                          )
+line_chart_categorical = line_chart.create_plot('Line Chart, Categorical', 
+                                                color_column='feature_11'
+                                                )
 plt.savefig(os.path.join('plots', 'line_chart_categorical.png'),
             bbox_inches='tight'
             )
 
 # centered error line chart
 error_column = 'feature_2'
-
 line_chart = LineChart(data, x_column, y_column, x_label, y_label, 
                        error_column=error_column, 
                        error_high_column=error_high_column, 
