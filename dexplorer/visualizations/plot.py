@@ -22,8 +22,8 @@ class Plot():
         # get data min and max
         self.x_min = self.data[self.x_column].min()
         self.x_max = self.data[self.x_column].max()
-        self.y_min = self.data[self.y_column].min()
-        self.y_max = self.data[self.y_column].max()
+        self.y_min = self.data[self.y_column].min() if self.y_column != None else None
+        self.y_max = self.data[self.y_column].max() if self.y_column != None else None
 
         # predefined member variables
         self.categorical_colors = ['lightskyblue', 'orange', 'forestgreen', 

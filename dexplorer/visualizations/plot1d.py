@@ -23,9 +23,9 @@ class Histogram(Plot):
         # set member variables
         self.num_bins = num_bins
         self.density = density
-        self.alpha = 0.4 if self.density == True else 1
+        self.alpha = 0.4
 
-    def _get_distribution_density(self, x: pd.Series):
+    def _get_distribution_density(self, x: list):
         density = gaussian_kde(x)
         density.covariance_factor = lambda : .25
         density._compute_covariance()
@@ -33,7 +33,7 @@ class Histogram(Plot):
 
     def _add_plot_data(self, fig: Any, data: pd.DataFrame, color: str=None):
         # create plot
-        x = data[self.x_column]
+        x = sorted(data[self.x_column])
         plt.hist(x, bins=self.num_bins, color=color, density=self.density, alpha=self.alpha)
 
         # add density
