@@ -42,6 +42,9 @@ class LineChart(Plot):
         return error_low, error_high
 
     def _add_plot_data(self, fig: Any, data: pd.DataFrame, color: str=None):
+        # get color
+        color = self.categorical_colors[0] if color is None else color
+        
         # create plot
         x = data[self.x_column]
         y = data[self.y_column]

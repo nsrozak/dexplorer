@@ -1,7 +1,8 @@
-from .plot1d import Histogram
+from .plot1d import BarChart, Histogram
 from .plot2d import LineChart, Scatterplot
 
-__all__ = ['Histogram',
+__all__ = ['BarChart', 
+           'Histogram',
            'LineChart', 
            'Scatterplot'
           ]
