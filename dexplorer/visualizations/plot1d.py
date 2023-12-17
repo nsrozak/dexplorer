@@ -111,7 +111,7 @@ class BarChart(Plot):
         fig = self._get_plot_axes(title, 
                                   x_ticks_width=x_ticks_width, 
                                   y_ticks_width=y_ticks_width,
-                                  x_ticks_labels=None
+                                  x_ticks_labels=self.labels
                                   )
         
         # add data to the plot

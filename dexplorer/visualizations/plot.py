@@ -48,7 +48,7 @@ class Plot():
         # adjust axes labels
         if x_ticks_labels is not None:
             x = np.arange(len(x_ticks_labels))
-            plt.xticks(x, x_ticks_labels, rotation='90')
+            plt.xticks(x, x_ticks_labels, rotation=90)
 
         # return figure
         return fig
